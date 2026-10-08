@@ -1,0 +1,415 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>RCalendar</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+</head>
+
+<body>
+    <!-- ============ LOGIN / SIGN UP ============ -->
+    <div id="home"><!--Div tags used to separate parts of the HTML for use in JavaScript and CSS-->
+        <div class="auth-shell">
+            <aside class="auth-brand"><!--Brand panel shown beside the login form-->
+                <div class="brand">
+                    <span class="brand-mark">R</span>
+                    <span class="brand-name">RCalendar</span>
+                </div>
+                <div class="auth-brand-copy">
+                    <h1>Plan smarter.<br>Study calmer.</h1>
+                    <p>Your tasks, revision and group work in one timetable that learns when you work best.</p>
+                    <ul class="feature-list">
+                        <li>Automatic scheduling based on your habits</li>
+                        <li>Exam timetables built in seconds</li>
+                        <li>Shared tasks for group projects</li>
+                    </ul>
+                </div>
+                <p class="auth-brand-foot">&copy; RCalendar</p>
+            </aside>
+
+            <div class="main auth-card">
+                <input type="checkbox" id="chk" aria-hidden="true"><!--Checkbox switches between login and sign up-->
+
+                <div id="login" class="login">
+                    <div id="login_form"><!--Existing users log in here-->
+                        <h2>Welcome back</h2>
+                        <p class="muted">Log in to see your timetable.</p>
+                        <div class="field">
+                            <label for="username">Username</label>
+                            <input id="username" type="text" name="txt" placeholder="Enter your username" autocomplete="username" required="">
+                        </div>
+                        <div class="field">
+                            <label for="password">Password</label>
+                            <input id="password" type="password" name="pswd" placeholder="Enter your password" autocomplete="current-password" required="">
+                        </div>
+                        <button id="submit_login" class="btn btn-primary btn-block">Log in</button><!--Button to submit the form to the backend-->
+                        <p class="switch">New to RCalendar? <label for="chk">Create an account</label></p>
+                    </div>
+                </div>
+
+                <div class="signup">
+                    <div id="signup_form"><!--New users can use this section to create a new account-->
+                        <h2>Create your account</h2>
+                        <p class="muted">It only takes a minute.</p>
+                        <div class="field">
+                            <label for="username_signup">Username</label>
+                            <input id="username_signup" type="text" name="txt" placeholder="Choose a username" autocomplete="username" required="">
+                        </div>
+                        <div class="field">
+                            <label for="password_signup">Password</label>
+                            <input id="password_signup" type="password" name="pswd" placeholder="Choose a password" autocomplete="new-password" required="">
+                        </div>
+                        <div class="field">
+                            <label for="security_question">Security question</label>
+                            <select id="security_question"><!--The user can choose from 3 different security questions-->
+                                <option value="What was your first pet?">What was your first pet?</option>
+                                <option value="What is your favourite sport?">What is your favourite sport?</option>
+                                <option value="What town did you grow up in?">What town did you grow up in?</option>
+                            </select>
+                        </div>
+                        <div class="field">
+                            <label for="security_answer">Answer</label>
+                            <input id="security_answer" type="text" placeholder="Your answer">
+                        </div>
+                        <button id="submit_signup" class="btn btn-primary btn-block">Sign up</button><!--Button to submit the form to the backend-->
+                        <p class="switch">Already have an account? <label for="chk">Log in</label></p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- ============ DASHBOARD ============ -->
+    <div id="menu">
+        <header class="topbar">
+            <div class="brand">
+                <span class="brand-mark">R</span>
+                <h1 class="title">RCalendar</h1>
+            </div>
+            <div class="topbar-actions">
+                <label class="date-control" for="selectedDate">
+                    <span class="sr-only">Selected date</span>
+                    <input type="date" id="selectedDate">
+                </label>
+                <button class="button4 avatar-btn" id="profile" title="Account settings" aria-label="Account settings"><!--Opens the change details form-->
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="8" r="4"/><path d="M4 21c0-4.4 3.6-8 8-8s8 3.6 8 8"/></svg>
+                </button>
+            </div>
+        </header>
+
+        <div id="remove-banner" class="banner">Remove mode is on: click a task to remove it without completing it.</div>
+
+        <main class="dashboard">
+            <section class="card schedule-card">
+                <div class="card-header">
+                    <div>
+                        <p class="eyebrow">Daily schedule</p>
+                        <h2 id="dayheading">Today</h2>
+                    </div>
+                    <p class="hint">Click a task to mark it complete</p>
+                </div>
+                <div class="schedule-scroll">
+                    <div class="container"><!--Div tags are used to outline the timetable and split the tasks-->
+                        <div class="timings"><!--Defines the timings into 1 hour chunks-->
+                            <div class="time">7 AM</div>
+                            <div class="time">8 AM</div>
+                            <div class="time">9 AM</div>
+                            <div class="time">10 AM</div>
+                            <div class="time">11 AM</div>
+                            <div class="time">12 PM</div>
+                            <div class="time">1 PM</div>
+                            <div class="time">2 PM</div>
+                            <div class="time">3 PM</div>
+                            <div class="time">4 PM</div>
+                            <div class="time">5 PM</div>
+                            <div class="time">6 PM</div>
+                            <div class="time">7 PM</div>
+                            <div class="time">8 PM</div>
+                            <div class="time">9 PM</div>
+                            <div class="time">10 PM</div>
+                            <div class="time">11 PM</div>
+                            <div class="time">12 AM</div>
+                            <div class="time">1 AM</div>
+                            <div class="time">2 AM</div>
+                            <div class="time">3 AM</div>
+                        </div>
+                        <div id="grid" class="grid"></div><!--Grid to store tasks-->
+                    </div>
+                </div>
+            </section>
+
+            <aside class="sidebar">
+                <section class="card">
+                    <h2 class="options">Quick actions</h2>
+                    <div class="action-list">
+                        <button class="button action" id="addtaskbutton">
+                            <span class="action-icon">+</span>
+                            <span><strong>Add task</strong><small>Schedule manually or automatically</small></span>
+                        </button>
+                        <button class="button2 action" id="deletetaskbutton">
+                            <span class="action-icon">&minus;</span>
+                            <span><strong>Remove task</strong><small>Then click the task to remove</small></span>
+                        </button>
+                        <button class="button3 action" id="etbutton">
+                            <span class="action-icon">&#9776;</span>
+                            <span><strong>Exam timetable</strong><small>Plan revision by subject</small></span>
+                        </button>
+                    </div>
+                </section>
+
+                <section class="card">
+                    <h3 class="card-title">Time split for this day</h3>
+                    <div class="chart-wrap"><!--The pie chart is defined-->
+                        <canvas id="pie-chart"></canvas>
+                        <p id="pie-empty" class="empty">No tasks scheduled for this day.</p>
+                    </div>
+                </section>
+
+                <section class="card">
+                    <h3 class="card-title">Productive days</h3>
+                    <div class="chart-wrap"><!--The bar chart is defined-->
+                        <canvas id="bar-chart"></canvas>
+                    </div>
+                </section>
+            </aside>
+        </main>
+    </div>
+    <div id="calendar"></div>
+
+    <!-- ============ EXAM TIMETABLE ============ -->
+    <div id="timetable" class="modal"><!--Div tag represents the timetable section-->
+        <div class="modal-card">
+            <div class="modal-header">
+                <div>
+                    <h2>Exam timetable</h2>
+                    <p class="muted">Add each subject, then confirm to schedule revision automatically.</p>
+                </div>
+                <button class="icon-close" onclick="homepage()" aria-label="Close">&times;</button>
+            </div>
+            <div class="addrow">
+                <div class="field">
+                    <label for="subject">Subject name</label><!--User can enter subject name-->
+                    <input type="text" id="subject" placeholder="e.g. Maths">
+                </div>
+                <div class="field-row">
+                    <div class="field">
+                        <label for="priority">Priority</label>
+                        <select id="priority"><!--User can select subject priority-->
+                            <option value=1>1</option>
+                            <option value=2>2</option>
+                            <option value=3>3</option>
+                            <option value=4>4</option>
+                            <option value=5>5</option>
+                        </select>
+                    </div>
+                    <div class="field">
+                        <label for="difficulty">Difficulty</label>
+                        <select id="difficulty"><!--User can select difficulty-->
+                            <option value=1>1</option>
+                            <option value=2>2</option>
+                            <option value=3>3</option>
+                            <option value=4>4</option>
+                            <option value=5>5</option>
+                        </select>
+                    </div>
+                    <div class="field">
+                        <label for="hours">Hours</label><!--User can enter number of hours to study-->
+                        <input type="number" min="1" placeholder="0" id="hours">
+                    </div>
+                </div>
+                <button class="btn btn-secondary btn-block" onclick="addsubject()">+ Add subject</button><!--Button adds subject onclick-->
+            </div>
+            <ul id="subjectslist" class="chip-list"></ul><!--Currently empty list of subjects-->
+            <div class="modal-footer">
+                <button class="btn btn-ghost" onclick="homepage()">Back</button><!--Button returns to homepage when clicked-->
+                <button class="btn btn-primary" onclick="createtimetable()">Create timetable</button><!--Button which creates the timetable when clicked-->
+            </div>
+        </div>
+    </div>
+
+    <!-- ============ ADD TASK ============ -->
+    <div id="form" class="form modal">
+        <div id="addtask" class="modal-card"><!--Form to let the user add a new task-->
+            <div class="modal-header">
+                <div>
+                    <h2>New task</h2>
+                    <p class="muted">Tell us about the task and how to schedule it.</p>
+                </div>
+                <button id="back" class="icon-close" aria-label="Close">&times;</button><!--Button to go back to homepage-->
+            </div>
+            <form id="taskinfo">
+                <div class="field">
+                    <label for="taskname">Task name</label><!--The user can enter task details-->
+                    <input type="text" id="taskname" name="taskname" placeholder="e.g. Physics past paper" required />
+                </div>
+                <div class="field-row">
+                    <div class="field">
+                        <label for="timetaken">Duration (hours)</label><!--The user can enter task duration-->
+                        <input type="number" min="1" id="timetaken" name="task time taken" placeholder="1" required />
+                    </div>
+                    <div class="field">
+                        <label for="taskcolour">Colour</label><!--The user can select a task colour-->
+                        <select id="taskcolour" name="task colour">
+                            <option>Grey</option>
+                            <option>Blue</option>
+                            <option>Green</option>
+                            <option>Pink</option>
+                            <option>coral</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="field-row">
+                    <div class="field">
+                        <label for="type">Task type</label><!--The user can enter task type-->
+                        <input type="text" id="type" name="type" placeholder="e.g. Studying" required />
+                    </div>
+                    <div class="field">
+                        <label for="taskdifficulty">Difficulty</label><!--The user can select task difficulty-->
+                        <select id="taskdifficulty" name="Task Difficulty">
+                            <option value=1>1</option>
+                            <option value=2>2</option>
+                            <option value=3>3</option>
+                            <option value=4>4</option>
+                            <option value=5>5</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="field">
+                    <label for="gtaskselection">Group task?</label><!--The user can schedule a group task-->
+                    <select id="gtaskselection"><!--Select used to determine the type of task-->
+                        <option value=1>Yes, share with other users</option>
+                        <option value=2>No, just me</option>
+                    </select>
+                </div>
+
+                <div id="grouptask" class="subpanel"><!--Section which collects the group members from the user-->
+                    <label for="groupusername">Group member username</label>
+                    <div class="inline-input">
+                        <input type="text" id="groupusername" placeholder="Username">
+                        <button type="button" class="btn btn-secondary" onclick="addusername()">Add</button><!--Username is added to the list-->
+                    </div>
+                    <ul id="usernamelist" class="chip-list"></ul><!--List of usernames-->
+                    <p class="hint">Group tasks are scheduled automatically for everyone.</p>
+                </div>
+
+                <div id="singleusertask" class="subpanel">
+                    <div class="field">
+                        <label for="method">Scheduling method</label><!--The user can select scheduling method-->
+                        <select id="method">
+                            <option value="manual">Manual: I'll pick the time</option>
+                            <option value="auto">Automatic: find the best slot</option>
+                            <option value="semiauto">Semi-automatic: pick a preferred day</option>
+                        </select>
+                    </div>
+                    <div id="dayselection" class="field"><!--If the user selects semi-auto they can enter a preferred day-->
+                        <label for="dayselected">Preferred day</label>
+                        <select id="dayselected">
+                            <option value="Monday">Monday</option>
+                            <option value="Tuesday">Tuesday</option>
+                            <option value="Wednesday">Wednesday</option>
+                            <option value="Thursday">Thursday</option>
+                            <option value="Friday">Friday</option>
+                            <option value="Saturday">Saturday</option>
+                            <option value="Sunday">Sunday</option>
+                        </select>
+                    </div>
+
+                    <div id="time_selection"><!--If it is manual selection the user can enter a time slot and date-->
+                        <div class="field-row">
+                            <div class="field">
+                                <label for="timeslot">Start time</label>
+                                <select id="timeslot" required>
+                                    <option value="1">7 AM</option>
+                                    <option value="2">8 AM</option>
+                                    <option value="3">9 AM</option>
+                                    <option value="4">10 AM</option>
+                                    <option value="5">11 AM</option>
+                                    <option value="6">12 PM</option>
+                                    <option value="7">1 PM</option>
+                                    <option value="8">2 PM</option>
+                                    <option value="9">3 PM</option>
+                                    <option value="10">4 PM</option>
+                                    <option value="11">5 PM</option>
+                                    <option value="12">6 PM</option>
+                                    <option value="13">7 PM</option>
+                                    <option value="14">8 PM</option>
+                                    <option value="15">9 PM</option>
+                                    <option value="16">10 PM</option>
+                                    <option value="17">11 PM</option>
+                                    <option value="18">12 AM</option>
+                                    <option value="19">1 AM</option>
+                                    <option value="20">2 AM</option>
+                                    <option value="21">3 AM</option>
+                                </select>
+                            </div>
+                            <div class="field">
+                                <label for="taskdate">Date</label><!--The user can enter task date if it is manual selection-->
+                                <input type="date" id="taskdate" required />
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="field">
+                        <label for="reschedule">Repeat weekly when completed?</label><!--The user can select if the task is rescheduled-->
+                        <select id="reschedule">
+                            <option value=1>Yes</option>
+                            <option value=2>No</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" onclick="addtask()" id="settask" class="creation btn btn-primary btn-block">Create task</button><!--Button to create task-->
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- ============ ACCOUNT SETTINGS ============ -->
+    <div id="changedetails" class="modal"><!--Div tags used to control the change details form-->
+        <div class="modal-card modal-sm">
+            <div class="modal-header">
+                <div>
+                    <h2>Account settings</h2>
+                    <p class="muted">Answer your security question to change your username or password.</p>
+                </div>
+                <button class="icon-close" onclick="homepage()" aria-label="Close">&times;</button>
+            </div>
+            <form id="userdetails">
+                <div class="field">
+                    <label for="validation">Security question</label>
+                    <select id="validation"><!--The user's security question is entered-->
+                        <option value="What was your first pet?">What was your first pet?</option>
+                        <option value="What is your favourite sport?">What is your favourite sport?</option>
+                        <option value="What town did you grow up in?">What town did you grow up in?</option>
+                    </select>
+                </div>
+                <div class="field">
+                    <label for="answer">Answer</label>
+                    <input id="answer" type="text" placeholder="Your answer"><!--The user's security answer is entered-->
+                </div>
+                <div class="divider"></div>
+                <div class="field">
+                    <label for="new_username">New username <span class="optional">optional</span></label>
+                    <input id="new_username" type="text" placeholder="Leave blank to keep current"><!--User enters new preferred details-->
+                </div>
+                <div class="field">
+                    <label for="new_password">New password <span class="optional">optional</span></label>
+                    <input id="new_password" type="password" placeholder="Leave blank to keep current">
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-ghost" onclick="homepage()">Cancel</button><!--Returns the user back to the homepage-->
+                    <button type="button" class="btn btn-primary" onclick="change_details()" id="user_details_submit">Save changes</button><!--Confirms the form-->
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
+    <script src="{{ url_for('static', filename='script.js') }}"></script>
+</body>
+</html>
